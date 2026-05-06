@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class ZanonInputManager : MonoBehaviour
 {
     public InputActionReference touchPositionReference;
-
+    [SerializeField, Range(0.1f, 10)] private float forzaPalla = 1;
     public void OnTouchPress(InputValue inputValue)
     {
         Debug.Log("L'utente ha premuto lo schermo");
@@ -16,15 +16,13 @@ public class ZanonInputManager : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            string hitGameobjectName = hit.collider.gameObject.name;
-            if(hitGameobjectName == "palla")
+            if(hit.collider.gameObject.CompareTag("Palla"))
             {
                 Rigidbody pallaRB = hit.collider.gameObject.GetComponent<Rigidbody>();
                 Vector3 direzione = ray.direction;
                 direzione.y = 0.5f;
                 direzione = direzione.normalized;
-                float potenzaColpo = 10f;
-                pallaRB.AddForce(direzione * potenzaColpo, ForceMode.Impulse);
+                pallaRB.AddForce(direzione * forzaPalla, ForceMode.Impulse);
             }
         }
     }
